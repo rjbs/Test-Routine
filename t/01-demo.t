@@ -68,6 +68,7 @@ use warnings;
     my $hash = $self->hash_to_test;
 
     is(keys %$hash, 1, "we have one key in our test hash");
+    is(2+2, 4, "universe still okay");
   };
 }
 
