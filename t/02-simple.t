@@ -45,20 +45,30 @@ test 'terminate odd' => sub {
   pass("for your information, the counter is " . $self->counter);
 };
 
-# Now we can run these tests just by saying "run_tests" -- with no arguments,
-# it assumes that the caller is a Test::Routine, and ends up composing it with
-# Moose::Object, instantiating it, and running the tests on the instance.
-run_tests;
+# Now we can run these tests just by saying "run_me" -- rather than expecting a
+# class or role name, it uses the caller.  In this case, the calling package
+# (main!) is a Test::Routine, so the runner composes it with Moose::Object,
+# instantiating it, and running the tests on the instance.
+run_me;
 
 # Since each test run gets its own instance, we can run the test suite again,
 # possibly to verify that the test suite is not destructive of some external
 # state.
-run_tests("second run");
+run_me("second run");
 
 # And we can pass in args to use when constructing the object to be tested.
 # Given the tests above, we can pick any starting value for "counter" that is
 # even.
-run_tests({ counter => 192 });
+run_me({ counter => 192 });
+
+
+# We haven't built skipping or todo tests into the framework.  We just use the
+# mechanisms we get from Test::More.  It's already tested, works well, and is
+# familiar to nearly anybody already testing in Perl.
+{
+  local $TODO = 'demo of todo';
+  run_me("start with odd", { counter => 1 });
+}
 
 # ...and we're done!
 done_testing;

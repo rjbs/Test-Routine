@@ -14,9 +14,10 @@ use namespace::clean;
 
 use Sub::Exporter -setup => {
   exports => [
-    run_tests => sub { \&_run_tests }
+    run_tests => \'_curry_tester',
+    run_me    => \'_curry_tester',
   ],
-  groups  => [ default   => [ 'run_tests' ] ],
+  groups  => [ default   => [ qw(run_me run_tests) ] ],
 };
 
 sub _obj {
@@ -33,28 +34,37 @@ sub _obj {
 
 our $UPLEVEL = 0;
 
-sub run_tests {
-  my ($self, $desc, $inv, $arg) = @_;
+sub _curry_tester {
+  my ($class, $name, $arg) = @_;
 
-  local $UPLEVEL = 1;
-  _run_tests($desc, $inv, $arg);
+  Carp::confess("the $name generator does not accept any arguments")
+    if keys %$arg;
+
+  return sub {
+    local $UPLEVEL = $UPLEVEL + 1;
+    $class->$name(@_);
+  };
 }
 
-sub _run_tests {
-  # Too much magic, we just want different run_tests-like routines, I think.
-  # -- rjbs, 2010-09-23
-  if (@_ == 1 and ! blessed $_[0]) {
-    if ((reftype $_[0]  // '') eq 'HASH') {
-      @_ = (undef, undef, $_[0]);
-    }
+sub run_me {
+  my ($class, $desc, $arg) = @_;
+
+  if (@_ == 2 and (reftype $desc // '') eq 'HASH') {
+    ($desc, $arg) = (undef, $arg);
   }
 
-  my ($desc, $inv, $arg) = @_;
+  my $caller = caller($UPLEVEL);
+
+  local $UPLEVEL = $UPLEVEL + 1;
+  $class->run_tests($desc, $caller, $arg);
+}
+
+sub run_tests {
+  my ($class, $desc, $inv, $arg) = @_;
 
   my @caller = caller($UPLEVEL);
 
   $desc //= sprintf 'tests from %s, line %s', $caller[1], $caller[2];
-  $inv  //= $caller[0];
 
   confess "can't supply object and args for running tests"
     if blessed $inv and $arg;
