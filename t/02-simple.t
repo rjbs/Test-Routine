@@ -29,8 +29,8 @@ sub counter_is_even {
 }
 
 # Then we can write some tests, just like we did before.  Here, we're writing
-# several tests, and they will be run in alphabetical order.  You can see that
-# they rely on the state being maintained.
+# several tests, and they will be run in the order in which they were defined.
+# You can see that they rely on the state being maintained.
 test 'start even' => sub {
   my ($self) = @_;
   ok($self->counter_is_even, "we start with an even counter");

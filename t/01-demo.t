@@ -82,9 +82,9 @@ use warnings;
   # installed.  Also note that we order tests by method name, not by
   # description.
   test second_test => { desc => "Test::Routine demo!" } => sub {
-    pass("we're running this test second");
-    pass("...because we alphabetize by test method name");
-    pass("...and not by test description");
+    pass("We're running this test second");
+    pass("...notice that the subtest's label is the 'desc' above");
+    pass("...and not the method name!");
   };
 }
 
