@@ -8,6 +8,7 @@ use Moose::Util ();
 use Scalar::Util ();
 
 use Test::Routine::Common;
+use Test::Routine::Test;
 
 Moose::Exporter->setup_import_methods(
   with_caller => [ qw(test) ],
@@ -22,13 +23,6 @@ sub init_meta {
   Moose::Util::apply_all_roles($role, 'Test::Routine::Common');
 
   return $meta;
-}
-
-{
-  package Test::Routine::Test;
-  use Moose;
-  extends 'Moose::Meta::Method';
-  no Moose;
 }
 
 sub test {
