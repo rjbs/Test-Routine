@@ -61,14 +61,8 @@ run_me("second run");
 # even.
 run_me({ counter => 192 });
 
-
-# We haven't built skipping or todo tests into the framework.  We just use the
-# mechanisms we get from Test::More.  It's already tested, works well, and is
-# familiar to nearly anybody already testing in Perl.
-{
-  local $TODO = 'demo of todo';
-  run_me("start with odd", { counter => 1 });
-}
-
 # ...and we're done!
 done_testing;
+
+# More Test::Routine behavior is demonstrated in t/03-advice.t and t/04-misc.t
+# Go have a look at those!

@@ -138,8 +138,8 @@ run_tests(
   },
 );
 
-# There's one more interesting way to invoke run_tests, but it's demonstrated
-# in 02-simple.t instead of here.  Go check that out.
+# There's one more interesting way to run out tests, but it's demonstrated in
+# 02-simple.t instead of here.  Go check that out.
 
 # ...and we're done!
 done_testing;
