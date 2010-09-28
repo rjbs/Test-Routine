@@ -65,7 +65,8 @@ use warnings;
   # The string after "test" is used as the method name -- which means we're
   # getting a method name with spaces in it.  This can be slightly problematic
   # if you try to use, say, ::, in a method name.  For the most part, it works
-  # quite well -- but look at the next test for an example of
+  # quite well -- but look at the next test for an example of how to give an
+  # explicit description.
   test "only one key in hash" => sub {
     my ($self) = @_;
 
