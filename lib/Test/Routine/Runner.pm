@@ -81,8 +81,14 @@ sub run_tests {
   my @tests = grep { $_->isa('Test::Routine::Test') }
               $thing->meta->get_all_methods;
 
+  my @ordered_tests =
+    map  { $_->[0] }
+    sort { $a->[1] cmp $b->[1] || $a->[3] <=> $b->[3] }
+    map  { [ $_, (split /\0/, $_->_origin, 3) ] }
+    @tests;
+
   Test::More::subtest($desc, sub {
-    for my $test (sort { $a->name cmp $b->name } @tests) {
+    for my $test (@ordered_tests) {
       $thing->run_test( $test );
     }
   });

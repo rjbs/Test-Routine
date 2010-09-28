@@ -25,6 +25,7 @@ sub init_meta {
   return $meta;
 }
 
+my $i = 0;
 sub test {
   my $caller = shift;
   my $name   = shift;
@@ -42,11 +43,15 @@ sub test {
 
   my $class = Moose::Meta::Class->initialize($caller);
 
+  my %origin;
+  @origin{qw(file line)} = (caller(0))[1,2];
+
   my $method = Test::Routine::Test->wrap(
     %$arg,
     name => $name,
     body => $body,
     package_name => $caller,
+    _origin      => join(qq{\0}, $origin{file}, $origin{line}, $i++),
   );
 
   $class->add_method($name => $method);

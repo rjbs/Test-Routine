@@ -9,4 +9,10 @@ has description => (
   default => sub { $_[0]->name },
 );
 
+has _origin => (
+  is  => 'ro',
+  isa => 'Str',
+  required => 1,
+);
+
 1;
