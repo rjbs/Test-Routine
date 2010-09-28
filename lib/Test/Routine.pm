@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 package Test::Routine;
+# ABSTRACT: composable units of assertion
+
 use Moose::Exporter;
 
 use Moose::Role ();
