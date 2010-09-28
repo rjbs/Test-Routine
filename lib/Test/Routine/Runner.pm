@@ -83,7 +83,7 @@ sub run_tests {
 
   Test::More::subtest($desc, sub {
     for my $test (sort { $a->name cmp $b->name } @tests) {
-      $thing->run_test( $test->name );
+      $thing->run_test( $test );
     }
   });
 }

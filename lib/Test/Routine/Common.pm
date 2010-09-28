@@ -6,9 +6,10 @@ use namespace::autoclean;
 use Test::More ();
 
 sub run_test {
-  my ($self, $test_name) = @_;
+  my ($self, $test) = @_;
 
-  Test::More::subtest($test_name, sub { $self->$test_name });
+  my $name = $test->name;
+  Test::More::subtest($test->description, sub { $self->$name });
 }
 
 1;

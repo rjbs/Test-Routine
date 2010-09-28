@@ -11,7 +11,7 @@ use warnings;
   # requirements we might have.
   #
   # Before we can run this test, we'll need to compose the role into a class so
-  # that we can make an instance.  
+  # that we can make an instance.
   package HashTester;
   use Test::Routine;
 
@@ -62,6 +62,10 @@ use warnings;
   # "plan", and we can issue TODO or SKIP directives the same way.  There is
   # none of the return-to-skip magic that we find in Test::Class.
   #
+  # The string after "test" is used as the method name -- which means we're
+  # getting a method name with spaces in it.  This can be slightly problematic
+  # if you try to use, say, ::, in a method name.  For the most part, it works
+  # quite well -- but look at the next test for an example of
   test "only one key in hash" => sub {
     my ($self) = @_;
 
@@ -69,6 +73,17 @@ use warnings;
 
     is(keys %$hash, 1, "we have one key in our test hash");
     is(2+2, 4, "universe still okay");
+  };
+
+  # The only thing of note here is that we're passing a hashref of extra args
+  # to the test method constructor.  "desc" lets us set the test's description,
+  # which is used in the test output, so we can avoid weird method names being
+  # installed.  Also note that we order tests by method name, not by
+  # description.
+  test second_test => { desc => "Test::Routine demo!" } => sub {
+    pass("we're running this test second");
+    pass("...because we alphabetize by test method name");
+    pass("...and not by test description");
   };
 }
 
@@ -103,7 +118,7 @@ is(2+2, 4, "universe still makes sense") or BAIL_OUT("PANIC!");
 # here, is a class that will be instantiated and tested.
 run_tests('ProcessHash class' => 'ProcessHash');
 
-# Here, the second argument is an instance of a class to test.  
+# Here, the second argument is an instance of a class to test.
 run_tests('ProcessHash obj' => ProcessHash->new({ hash_to_test => { 1 => 0 }}));
 
 # We could also just supply a class name and a set of args to pass to new.
@@ -111,7 +126,7 @@ run_tests('ProcessHash obj' => ProcessHash->new({ hash_to_test => { 1 => 0 }}));
 run_tests('ProcessHash new' => ProcessHash => { hash_to_test => { 1 => 0 }});
 
 # ...and here, the second arg is not a class or instance at all, but the
-# Test::Routine role (by name).  Since we know we can't instantiate a role, 
+# Test::Routine role (by name).  Since we know we can't instantiate a role,
 # run_tests will try to compose it with Moose::Object.  Then the args are used
 # as the args to ->new on the new class, as above.  This lets us write
 # Test::Routines that can be tested with the right state to start with, or

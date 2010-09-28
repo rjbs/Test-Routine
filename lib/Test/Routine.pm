@@ -26,11 +26,22 @@ sub init_meta {
 }
 
 sub test {
-  my ($caller, $name, $code) = @_;
+  my $caller = shift;
+  my $name   = shift;
+  my $arg    = Params::Util::_HASH0($_[0]) ? { %{shift()} } : {};
+  my $code   = shift;
+
+  if (exists $arg->{desc}) {
+    Carp::confess "can't supply both 'desc' and 'description'"
+      if exists $arg->{description};
+
+    $arg->{description} = delete $arg->{desc};
+  }
 
   my $class = Moose::Meta::Class->initialize($caller);
 
   my $method = Test::Routine::Test->wrap(
+    %$arg,
     name => $name,
     body => $code,
     package_name => $caller,
@@ -38,6 +49,5 @@ sub test {
 
   $class->add_method($name => $method);
 }
-
 
 1;
