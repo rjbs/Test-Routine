@@ -81,11 +81,12 @@ sub run_tests {
   my @tests = grep { $_->isa('Test::Routine::Test') }
               $thing->meta->get_all_methods;
 
-  my @ordered_tests =
-    map  { $_->[0] }
-    sort { $a->[1] cmp $b->[1] || $a->[3] <=> $b->[3] }
-    map  { [ $_, (split /\0/, $_->_origin, 3) ] }
-    @tests;
+  # As a side note, I wonder whether there is any way to format the code below
+  # to not look stupid. -- rjbs, 2010-09-28
+  my @ordered_tests = sort {
+         $a->_origin->{file} cmp $b->_origin->{file}
+      || $a->_origin->{nth}  <=> $a->_origin->{nth}
+  } @tests;
 
   Test::More::subtest($desc, sub {
     for my $test (@ordered_tests) {

@@ -46,14 +46,14 @@ sub test {
   my $class = Moose::Meta::Class->initialize($caller);
 
   my %origin;
-  @origin{qw(file line)} = (caller(0))[1,2];
+  @origin{qw(file line nth)} = ((caller(0))[1,2], $i++);
 
   my $method = Test::Routine::Test->wrap(
     %$arg,
     name => $name,
     body => $body,
     package_name => $caller,
-    _origin      => join(qq{\0}, $origin{file}, $origin{line}, $i++),
+    _origin      => \%origin,
   );
 
   $class->add_method($name => $method);

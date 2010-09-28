@@ -11,7 +11,7 @@ has description => (
 
 has _origin => (
   is  => 'ro',
-  isa => 'Str',
+  isa => 'HashRef',
   required => 1,
 );
 
