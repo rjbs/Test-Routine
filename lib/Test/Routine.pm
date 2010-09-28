@@ -29,12 +29,14 @@ sub test {
   my $caller = shift;
   my $name   = shift;
   my $arg    = Params::Util::_HASH0($_[0]) ? { %{shift()} } : {};
-  my $code   = shift;
+  my $body   = shift;
 
+  # This could really have been done with a MooseX like InitArgs or Alias in
+  # Test::Routine::Test, but since this is a test library, I'd actually like to
+  # keep prerequisites fairly limited. -- rjbs, 2010-09-28
   if (exists $arg->{desc}) {
     Carp::confess "can't supply both 'desc' and 'description'"
       if exists $arg->{description};
-
     $arg->{description} = delete $arg->{desc};
   }
 
@@ -43,7 +45,7 @@ sub test {
   my $method = Test::Routine::Test->wrap(
     %$arg,
     name => $name,
-    body => $code,
+    body => $body,
     package_name => $caller,
   );
 
