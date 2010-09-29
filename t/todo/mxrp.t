@@ -5,6 +5,8 @@ use warnings;
 use Test::Routine::Runner;
 use Test::More;
 
+plan skip_all => 'Test::Runner and MXRP not yet compatible';
+
 {
   package Test::ThingHasID;
   use MooseX::Role::Parameterized;
