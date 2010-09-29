@@ -79,8 +79,8 @@ use warnings;
   # The only thing of note here is that we're passing a hashref of extra args
   # to the test method constructor.  "desc" lets us set the test's description,
   # which is used in the test output, so we can avoid weird method names being
-  # installed.  Also note that we order tests by method name, not by
-  # description.
+  # installed.  Also note that we order tests more or less by order of
+  # definition, not by name or description.
   test second_test => { desc => "Test::Routine demo!" } => sub {
     pass("We're running this test second");
     pass("...notice that the subtest's label is the 'desc' above");
