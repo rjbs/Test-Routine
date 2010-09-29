@@ -20,18 +20,6 @@ use Sub::Exporter -setup => {
   groups  => [ default   => [ qw(run_me run_tests) ] ],
 };
 
-sub _obj {
-  my ($inv, $arg) = @_;
-
-  my $class = Moose::Meta::Class->create_anon_class(
-    superclasses => [ 'Moose::Object' ],
-    roles        => [ $inv ],
-    cache        => 1,
-  );
-
-  $class->name->new($arg);
-}
-
 our $UPLEVEL = 0;
 
 sub _curry_tester {
@@ -59,6 +47,42 @@ sub run_me {
   $class->run_tests($desc, $caller, $arg);
 }
 
+sub _invocant_for {
+  my ($class, $inv, $arg) = @_;
+
+  confess "can't supply object and args for running tests"
+    if blessed $inv and $arg;
+
+  $arg //= {};
+
+  return $inv if blessed $inv;
+
+  $inv = [ $inv ] if Params::Util::_CLASS($inv);
+
+  my @bases;
+  my @roles;
+
+  for my $item (@$inv) {
+    Class::MOP::load_class($item);
+    my $target = $item->meta->isa('Moose::Meta::Class') ? \@bases
+               : $item->meta->isa('Moose::Meta::Role')  ? \@roles
+               : confess "can't run tests for this weird thing: $item";
+
+    push @$target, $item;
+  }
+
+  confess "can't build a test class from multiple base classes" if @bases > 1;
+  @bases = 'Moose::Object' unless @bases;
+
+  my $new_class = Moose::Meta::Class->create_anon_class(
+    superclasses => \@bases,
+    cache        => 1,
+    (@roles ? (roles => \@roles) : ()),
+  );
+
+  $new_class->name->new($arg);
+}
+
 sub run_tests {
   my ($class, $desc, $inv, $arg) = @_;
 
@@ -66,17 +90,7 @@ sub run_tests {
 
   $desc //= sprintf 'tests from %s, line %s', $caller[1], $caller[2];
 
-  confess "can't supply object and args for running tests"
-    if blessed $inv and $arg;
-
-  $arg //= {};
-
-  Class::MOP::load_class($inv) if not blessed $inv;
-
-  my $thing = blessed $inv                          ? $inv
-            : $inv->meta->isa('Moose::Meta::Class') ? $inv->new($arg)
-            : $inv->meta->isa('Moose::Meta::Role')  ? _obj($inv, $arg)
-            : confess "can't handle $inv";
+  my $thing = $class->_invocant_for($inv, $arg);
 
   my @tests = grep { $_->isa('Test::Routine::Test') }
               $thing->meta->get_all_methods;
