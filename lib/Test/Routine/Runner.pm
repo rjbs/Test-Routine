@@ -1,6 +1,20 @@
 use strict;
 use warnings;
 package Test::Routine::Runner;
+# ABSTRACT: tools for running Test::Routine tests
+
+=head1 OVERVIEW
+
+Test::Routine::Runner is documented in L<the Test::Routine docs on running
+tests|Test::Routine/Running Tests>.  Please consult those for more information.
+
+Both C<run_tests> and C<run_me> are methods on Test::Routine::Runner, and
+are exported by default with the invocant curried.  This means that you can
+write a subclass of Test::Routine::Runner with different behavior.  Do this
+cautiously.  Although the basic behavior of the runner are unlikely to change,
+they are not yet set entirely in stone.
+
+=cut
 
 use Carp qw(confess);
 use Class::MOP ();
