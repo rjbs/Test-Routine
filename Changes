@@ -2,5 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.002     2010-09-30 09:26:43 America/New_York
+          lower required perl to 5.8.x
+
+          raise required Test::More to 0.96
+
 0.001     2010-09-29 11:25:57 America/New_York
           first release
