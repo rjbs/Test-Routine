@@ -16,9 +16,8 @@ yet set entirely in stone.
 =cut
 
 use Carp qw(confess);
-use Class::MOP ();
-use Moose::Meta::Class;
-use Scalar::Util qw(blessed reftype);
+use Scalar::Util qw(reftype);
+use Test::Routine::Compositor;
 use Test::More ();
 
 use Sub::Exporter::Util qw(curry_method);
@@ -32,6 +31,22 @@ use Sub::Exporter -setup => {
   ],
   groups  => [ default   => [ qw(run_me run_tests) ] ],
 };
+
+has test_instance => (
+  is   => 'ro',
+  does => 'Test::Routine::Common',
+  init_arg   => undef,
+  lazy_build => 1,
+);
+
+has instance_builder => (
+  is  => 'ro',
+  isa => 'CodeRef',
+  traits  => [ 'Code' ],
+  handles => {
+    '_build_test_instance' => 'execute_method',
+  },
+);
 
 our $UPLEVEL = 0;
 
@@ -60,49 +75,6 @@ sub run_me {
   $class->run_tests($desc, $caller, $arg);
 }
 
-sub _class_for {
-  my ($class, $inv) = @_;
-
-  confess "can't supply preconstructed object for test class construction"
-    if blessed $inv;
-
-  $inv = [ $inv ] if Params::Util::_CLASS($inv);
-
-  my @bases;
-  my @roles;
-
-  for my $item (@$inv) {
-    Class::MOP::load_class($item);
-    my $target = $item->meta->isa('Moose::Meta::Class') ? \@bases
-               : $item->meta->isa('Moose::Meta::Role')  ? \@roles
-               : confess "can't run tests for this weird thing: $item";
-
-    push @$target, $item;
-  }
-
-  confess "can't build a test class from multiple base classes" if @bases > 1;
-  @bases = 'Moose::Object' unless @bases;
-
-  my $new_class = Moose::Meta::Class->create_anon_class(
-    superclasses => \@bases,
-    cache        => 1,
-    (@roles ? (roles => \@roles) : ()),
-  );
-}
-
-sub _invocant_for {
-  my ($self, $thing, $arg) = @_;
-
-  confess "can't supply preconstructed object for running tests"
-    if $arg and blessed $thing;
-
-  return $thing if blessed $thing;
-
-  $arg ||= {};
-  my $new_class = $self->_class_for($thing);
-  $new_class->name->new($arg);
-}
-
 sub run_tests {
   my ($class, $desc, $inv, $arg) = @_;
 
@@ -112,7 +84,32 @@ sub run_tests {
         ? $desc
         : sprintf 'tests from %s, line %s', $caller[1], $caller[2];
 
-  my $thing = $class->_invocant_for($inv, $arg);
+  my $builder = Test::Routine::Compositor->instance_builder($inv, $arg);
+
+  my $self = $class->new({
+    description      => $desc,
+    instance_builder => $builder,
+  });
+
+  $self->run;
+}
+
+has description => (
+  is  => 'ro',
+  isa => 'Str',
+  required => 1,
+);
+
+has fresh_instance => (
+  is  => 'ro',
+  isa => 'Bool',
+  default => 0,
+);
+
+sub run {
+  my ($self) = @_;
+
+  my $thing = $self->test_instance;
 
   my @tests = grep { $_->isa('Test::Routine::Test') }
               $thing->meta->get_all_methods;
@@ -124,9 +121,10 @@ sub run_tests {
       || $a->_origin->{nth}  <=> $a->_origin->{nth}
   } @tests;
 
-  Test::More::subtest($desc, sub {
+  Test::More::subtest($self->description, sub {
     for my $test (@ordered_tests) {
-      $thing->run_test( $test );
+      $self->test_instance->run_test( $test );
+      $self->clear_test_instance if $self->fresh_instance;
     }
   });
 }
