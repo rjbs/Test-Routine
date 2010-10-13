@@ -1,5 +1,5 @@
 use Test::Routine;
-use Test::Routine::Runner;
+use Test::Routine::Util;
 use Test::More;
 
 use namespace::autoclean;

@@ -2,10 +2,10 @@
 use strict;
 use warnings;
 
-use Test::Routine::Runner;
+use Test::Routine::Util;
 use Test::More;
 
-BEGIN { plan skip_all => 'Test::Runner and MXRP not yet compatible'; }
+BEGIN { plan skip_all => 'Test::Routine and MXRP not yet compatible'; }
 
 {
   package Test::ThingHasID;

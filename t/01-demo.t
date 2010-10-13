@@ -103,9 +103,9 @@ use warnings;
 
 # Now we're into the body of the test program:  where tests actually get run.
 
-# We use Test::Routine::Runner to get its "run_tests" method, which runs the
+# We use Test::Routine::Util to get its "run_tests" routine, which runs the
 # tests on an instance, building it if needed.
-use Test::Routine::Runner;
+use Test::Routine::Util;
 
 # We use Test::More to get done_testing.  We don't assume that run_tests is the
 # entire test, because that way we can (as we do here) run multiple test
