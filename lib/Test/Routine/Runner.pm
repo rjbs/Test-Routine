@@ -39,12 +39,12 @@ has test_instance => (
   lazy_build => 1,
 );
 
-has instance_builder => (
+has _instance_builder => (
   is  => 'ro',
   isa => 'Test::Routine::InstanceBuilder',
   coerce   => 1,
   traits   => [ 'Code' ],
-  init_arg => 'test_instance',
+  init_arg => 'instance_from',
   required => 1,
   handles  => {
     '_build_test_instance' => 'execute_method',

@@ -59,7 +59,7 @@ sub run_tests {
 
   my $self = $class->_runner_class->new({
     description   => $desc,
-    test_instance => $builder,
+    instance_from => $builder,
   });
 
   $self->run;
