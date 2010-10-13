@@ -16,11 +16,21 @@ yet set entirely in stone.
 =cut
 
 use Carp qw(confess);
+use Scalar::Util qw(reftype);
 use Test::More ();
 
-use Sub::Exporter::Util qw(curry_method);
+use Moose::Util::TypeConstraints;
 
 use namespace::clean;
+
+subtype 'Test::Routine::InstanceBuilder', as 'CodeRef';
+subtype 'Test::Routine::Instance',
+  as 'Object',
+  where { $_->does('Test::Routine::Common') };
+
+coerce 'Test::Routine::InstanceBuilder',
+  from 'Test::Routine::Instance',
+  via  { my $instance = $_; sub { $instance } };
 
 has test_instance => (
   is   => 'ro',
@@ -31,9 +41,12 @@ has test_instance => (
 
 has instance_builder => (
   is  => 'ro',
-  isa => 'CodeRef',
-  traits  => [ 'Code' ],
-  handles => {
+  isa => 'Test::Routine::InstanceBuilder',
+  coerce   => 1,
+  traits   => [ 'Code' ],
+  init_arg => 'test_instance',
+  required => 1,
+  handles  => {
     '_build_test_instance' => 'execute_method',
   },
 );

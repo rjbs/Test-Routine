@@ -4,6 +4,7 @@ package Test::Routine::Util;
 
 use Scalar::Util qw(reftype);
 
+use Sub::Exporter::Util qw(curry_method);
 use Test::Routine::Compositor;
 use Test::Routine::Runner;
 
@@ -57,8 +58,8 @@ sub run_tests {
   my $builder = $class->_compositor_class->instance_builder($inv, $arg);
 
   my $self = $class->_runner_class->new({
-    description      => $desc,
-    instance_builder => $builder,
+    description   => $desc,
+    test_instance => $builder,
   });
 
   $self->run;
