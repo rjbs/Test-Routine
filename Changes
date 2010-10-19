@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.003     2010-10-18 23:02:32 America/New_York
+          PLEASE UPDATE YOUR CODE:  run_* now come from Test::Runner::Util
+
 0.002     2010-09-30 09:26:43 America/New_York
           lower required perl to 5.8.x
 
