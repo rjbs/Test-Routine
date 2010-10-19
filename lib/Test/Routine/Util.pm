@@ -1,19 +1,32 @@
 use strict;
 use warnings;
 package Test::Routine::Util;
+# ABSTRACT: helpful exports for dealing with test routines
+
+=head1 OVERVIEW
+
+Test::Routine::Util is documented in L<the Test::Routine docs on running
+tests|Test::Routine/Running Tests>.  Please consult those for more information.
+
+Both C<run_tests> and C<run_me> are simple wrappers around the process of
+composing given Test::Routine roles into a class and instance using
+L<Test::Routine::Compositor>, creating a L<Test::Routine::Runner> object and
+telling it to execute the tests on the test instance.
+
+=cut
 
 use Scalar::Util qw(reftype);
 
 use Sub::Exporter::Util qw(curry_method);
 use Test::Routine::Compositor;
-use Test::Routine::Runner;
+use Test::Routine::Runner ();
 
 use Sub::Exporter -setup => {
   exports => [
     run_tests => \'_curry_tester',
     run_me    => \'_curry_tester',
   ],
-  groups  => [ default   => [ qw(run_me run_tests) ] ],
+  groups => [ default => [ qw(run_me run_tests) ] ],
 };
 
 our $UPLEVEL = 0;

@@ -4,14 +4,12 @@ use Moose;
 
 =head1 OVERVIEW
 
-Test::Routine::Runner is documented in L<the Test::Routine docs on running
-tests|Test::Routine/Running Tests>.  Please consult those for more information.
-
-Both C<run_tests> and C<run_me> are methods on Test::Routine::Runner, and are
-exported by default with the invocant curried.  This means that you can write a
-subclass of Test::Routine::Runner with different behavior.  Do this cautiously.
-Although the basic behaviors of the runner are unlikely to change, they are not
-yet set entirely in stone.
+A Test::Routine::Runner takes a callback for building test instances, then uses
+it to build instances and run the tests on it.  The Test::Routine::Runner
+interface is still undergoing work, but the Test::Routine::Util exports for
+running tests, descibed in L<Test::Routine|Test::Routine/Running Tests>, are
+more stable.  Please use those instead, unless you are willing to deal with
+interface breakage.
 
 =cut
 
@@ -23,13 +21,34 @@ use Moose::Util::TypeConstraints;
 
 use namespace::clean;
 
-subtype 'Test::Routine::InstanceBuilder', as 'CodeRef';
-subtype 'Test::Routine::Instance',
+# XXX: THIS CODE BELOW WILL BE REMOVED VERY SOON -- rjbs, 2010-10-18
+use Sub::Exporter -setup => {
+  exports => [
+    run_tests => \'_curry_tester',
+    run_me    => \'_curry_tester',
+  ],
+  groups  => [ default   => [ qw(run_me run_tests) ] ],
+};
+
+sub _curry_tester {
+  my ($class, $name) = @_;
+  use Test::Routine::Util;
+  my $sub = Test::Routine::Util->_curry_tester($name);
+
+  return sub {
+    warn "you got $name from Test::Routine::Runner; use Test::Routine::Util instead; Test::Routine::Runner's exports will be removed soon\n";
+    goto &$sub;
+  }
+}
+# XXX: THIS CODE ABOVE WILL BE REMOVED VERY SOON -- rjbs, 2010-10-18
+
+subtype 'Test::Routine::_InstanceBuilder', as 'CodeRef';
+subtype 'Test::Routine::_Instance',
   as 'Object',
   where { $_->does('Test::Routine::Common') };
 
-coerce 'Test::Routine::InstanceBuilder',
-  from 'Test::Routine::Instance',
+coerce 'Test::Routine::_InstanceBuilder',
+  from 'Test::Routine::_Instance',
   via  { my $instance = $_; sub { $instance } };
 
 has test_instance => (
@@ -41,7 +60,7 @@ has test_instance => (
 
 has _instance_builder => (
   is  => 'ro',
-  isa => 'Test::Routine::InstanceBuilder',
+  isa => 'Test::Routine::_InstanceBuilder',
   coerce   => 1,
   traits   => [ 'Code' ],
   init_arg => 'instance_from',
