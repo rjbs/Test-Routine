@@ -1,31 +1,27 @@
-use strict;
-use warnings;
 package Test::Routine::Runner;
+use Moose;
 # ABSTRACT: tools for running Test::Routine tests
 
 =head1 OVERVIEW
 
-Test::Routine::Runner is documented in L<the Test::Routine docs on running
-tests|Test::Routine/Running Tests>.  Please consult those for more information.
-
-Both C<run_tests> and C<run_me> are methods on Test::Routine::Runner, and
-are exported by default with the invocant curried.  This means that you can
-write a subclass of Test::Routine::Runner with different behavior.  Do this
-cautiously.  Although the basic behavior of the runner are unlikely to change,
-they are not yet set entirely in stone.
+A Test::Routine::Runner takes a callback for building test instances, then uses
+it to build instances and run the tests on it.  The Test::Routine::Runner
+interface is still undergoing work, but the Test::Routine::Util exports for
+running tests, descibed in L<Test::Routine|Test::Routine/Running Tests>, are
+more stable.  Please use those instead, unless you are willing to deal with
+interface breakage.
 
 =cut
 
 use Carp qw(confess);
-use Class::MOP ();
-use Moose::Meta::Class;
-use Scalar::Util qw(blessed reftype);
+use Scalar::Util qw(reftype);
 use Test::More ();
 
-use Sub::Exporter::Util qw(curry_method);
+use Moose::Util::TypeConstraints;
 
 use namespace::clean;
 
+# XXX: THIS CODE BELOW WILL BE REMOVED VERY SOON -- rjbs, 2010-10-18
 use Sub::Exporter -setup => {
   exports => [
     run_tests => \'_curry_tester',
@@ -34,79 +30,62 @@ use Sub::Exporter -setup => {
   groups  => [ default   => [ qw(run_me run_tests) ] ],
 };
 
-our $UPLEVEL = 0;
-
 sub _curry_tester {
-  my ($class, $name, $arg) = @_;
-
-  Carp::confess("the $name generator does not accept any arguments")
-    if keys %$arg;
+  my ($class, $name) = @_;
+  use Test::Routine::Util;
+  my $sub = Test::Routine::Util->_curry_tester($name);
 
   return sub {
-    local $UPLEVEL = $UPLEVEL + 1;
-    $class->$name(@_);
-  };
-}
-
-sub run_me {
-  my ($class, $desc, $arg) = @_;
-
-  if (@_ == 2 and (reftype $desc || '') eq 'HASH') {
-    ($desc, $arg) = (undef, $arg);
+    warn "you got $name from Test::Routine::Runner; use Test::Routine::Util instead; Test::Routine::Runner's exports will be removed soon\n";
+    goto &$sub;
   }
-
-  my $caller = caller($UPLEVEL);
-
-  local $UPLEVEL = $UPLEVEL + 1;
-  $class->run_tests($desc, $caller, $arg);
 }
+# XXX: THIS CODE ABOVE WILL BE REMOVED VERY SOON -- rjbs, 2010-10-18
 
-sub _invocant_for {
-  my ($class, $inv, $arg) = @_;
+subtype 'Test::Routine::_InstanceBuilder', as 'CodeRef';
+subtype 'Test::Routine::_Instance',
+  as 'Object',
+  where { $_->does('Test::Routine::Common') };
 
-  confess "can't supply object and args for running tests"
-    if blessed $inv and $arg;
+coerce 'Test::Routine::_InstanceBuilder',
+  from 'Test::Routine::_Instance',
+  via  { my $instance = $_; sub { $instance } };
 
-  $arg = {} unless defined $arg;
+has test_instance => (
+  is   => 'ro',
+  does => 'Test::Routine::Common',
+  init_arg   => undef,
+  lazy_build => 1,
+);
 
-  return $inv if blessed $inv;
+has _instance_builder => (
+  is  => 'ro',
+  isa => 'Test::Routine::_InstanceBuilder',
+  coerce   => 1,
+  traits   => [ 'Code' ],
+  init_arg => 'instance_from',
+  required => 1,
+  handles  => {
+    '_build_test_instance' => 'execute_method',
+  },
+);
 
-  $inv = [ $inv ] if Params::Util::_CLASS($inv);
+has description => (
+  is  => 'ro',
+  isa => 'Str',
+  required => 1,
+);
 
-  my @bases;
-  my @roles;
+has fresh_instance => (
+  is  => 'ro',
+  isa => 'Bool',
+  default => 0,
+);
 
-  for my $item (@$inv) {
-    Class::MOP::load_class($item);
-    my $target = $item->meta->isa('Moose::Meta::Class') ? \@bases
-               : $item->meta->isa('Moose::Meta::Role')  ? \@roles
-               : confess "can't run tests for this weird thing: $item";
+sub run {
+  my ($self) = @_;
 
-    push @$target, $item;
-  }
-
-  confess "can't build a test class from multiple base classes" if @bases > 1;
-  @bases = 'Moose::Object' unless @bases;
-
-  my $new_class = Moose::Meta::Class->create_anon_class(
-    superclasses => \@bases,
-    cache        => 1,
-    (@roles ? (roles => \@roles) : ()),
-  );
-
-  $new_class->name->new($arg);
-}
-
-sub run_tests {
-  my ($class, $desc, $inv, $arg) = @_;
-
-  my @caller = caller($UPLEVEL);
-
-  $desc = defined($desc)
-        ? $desc
-        : sprintf 'tests from %s, line %s', $caller[1], $caller[2];
-
-  my $thing = $class->_invocant_for($inv, $arg);
+  my $thing = $self->test_instance;
 
   my @tests = grep { $_->isa('Test::Routine::Test') }
               $thing->meta->get_all_methods;
@@ -118,9 +97,10 @@ sub run_tests {
       || $a->_origin->{nth}  <=> $a->_origin->{nth}
   } @tests;
 
-  Test::More::subtest($desc, sub {
+  Test::More::subtest($self->description, sub {
     for my $test (@ordered_tests) {
-      $thing->run_test( $test );
+      $self->test_instance->run_test( $test );
+      $self->clear_test_instance if $self->fresh_instance;
     }
   });
 }

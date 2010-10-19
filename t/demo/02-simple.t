@@ -7,8 +7,8 @@
 # side-effect of turning on strict and warnings.
 use Test::Routine;
 
-# Then we bring in the runner, because we'll want to run_tests later.
-use Test::Routine::Runner;
+# Then we bring in the utils, because we'll want to run_tests later.
+use Test::Routine::Util;
 
 # And, finally, we bring in Test::More so that we can use test assertions, and
 # namespace::autoclean to clean up after us.

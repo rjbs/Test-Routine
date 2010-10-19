@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::Routine::Runner;
+use Test::Routine::Util;
 use Test::More;
 
 # One of the benefits of building our sets of tests into roles instead of
