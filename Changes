@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          correct a bug in test execution order
 
 0.003     2010-10-18 23:02:32 America/New_York
           PLEASE UPDATE YOUR CODE:  run_* now come from Test::Runner::Util

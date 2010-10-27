@@ -94,7 +94,7 @@ sub run {
   # to not look stupid. -- rjbs, 2010-09-28
   my @ordered_tests = sort {
          $a->_origin->{file} cmp $b->_origin->{file}
-      || $a->_origin->{nth}  <=> $a->_origin->{nth}
+      || $a->_origin->{nth}  <=> $b->_origin->{nth}
   } @tests;
 
   Test::More::subtest($self->description, sub {
