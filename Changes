@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.004     2010-10-27 19:46:19 America/New_York
           correct a bug in test execution order
 
 0.003     2010-10-18 23:02:32 America/New_York
