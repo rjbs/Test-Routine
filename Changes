@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          tiny but critical bug in synopsis (thanks, Piers Cawley)
 
 0.004     2010-10-27 19:46:19 America/New_York
           correct a bug in test execution order
