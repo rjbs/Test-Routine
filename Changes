@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.005     2010-12-19 21:53:36 America/New_York
           tiny but critical bug in synopsis (thanks, Piers Cawley)
 
 0.004     2010-10-27 19:46:19 America/New_York
