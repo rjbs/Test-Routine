@@ -11,7 +11,7 @@ sub munge_file {
   my ($self, $file) = @_;
   return unless $file->name eq 'lib/Test/Routine/Manual/Demo.pm';
 
-  my @demo_files = sort <t/??-*.t>;
+  my @demo_files = sort <t/demo/??-*.t>;
 
   my $demo_text = '';
   for my $demo_file (@demo_files) {
