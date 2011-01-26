@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.006     2011-01-26 15:27:00 America/New_York
+          correctly generate the Demo.pod (thanks, Yanick Champoux)
+
 0.005     2010-12-19 21:53:36 America/New_York
           tiny but critical bug in synopsis (thanks, Piers Cawley)
 
