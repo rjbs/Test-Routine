@@ -1,2 +1,0 @@
-MANIFEST.SKIP
-inc/BuildDemo.pm   # for Dist::Zilla
