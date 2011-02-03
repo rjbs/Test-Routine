@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 package Test::Routine::Compositor;
+# ABSTRACT: the tool for turning test routines into runnable classes
 
 use Carp qw(confess);
 use Class::MOP;
