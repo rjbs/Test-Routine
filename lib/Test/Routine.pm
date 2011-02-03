@@ -204,7 +204,7 @@ sub test {
   # Test::Routine::Test, but since this is a test library, I'd actually like to
   # keep prerequisites fairly limited. -- rjbs, 2010-09-28
   if (exists $arg->{desc}) {
-    Carp::confess "can't supply both 'desc' and 'description'"
+    Carp::croak "can't supply both 'desc' and 'description'"
       if exists $arg->{description};
     $arg->{description} = delete $arg->{desc};
   }
@@ -221,6 +221,9 @@ sub test {
     package_name => $caller,
     _origin      => \%origin,
   );
+
+  Carp::croak "can't have two tests with the same name ($name)"
+    if $class->get_method($name);
 
   $class->add_method($name => $method);
 }

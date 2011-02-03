@@ -2,6 +2,12 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+          We now forbid two tests with the same name.  This may seem to be
+          backwards incompatible, but the previous behavior was to silently
+          replace each test in turn, so that tests written would simply not
+          run.  To allow safer routine composition, we have made duplicate
+          names fatal, rather than adding arbitrary distinguishing suffixes.
+
 0.006     2011-01-26 15:27:00 America/New_York
           correctly generate the Demo.pod (thanks, Yanick Champoux)
 
