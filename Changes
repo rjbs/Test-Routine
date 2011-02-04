@@ -2,6 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.008     2011-02-03 21:02:08 America/New_York
+
           eliminate a bogus prereq; sorry about that; thanks Glenn Fowler
 
 0.007     2011-02-03 16:21:44 America/New_York
