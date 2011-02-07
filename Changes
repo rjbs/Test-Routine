@@ -2,6 +2,8 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+          eliminate the 5.12-only ... operator
+
 0.008     2011-02-03 21:02:08 America/New_York
 
           eliminate a bogus prereq; sorry about that; thanks Glenn Fowler
