@@ -32,4 +32,25 @@ BEGIN {
     ::test_test();
 }
 
+{
+    package Test::Bar;
+    use Test::Routine;
+    use Test::Routine::Util;
+    use MooseX::Method::Signatures;
+
+    ::is(::exception {
+        test 'foo bar' => { description => 'foobar' } => method {
+            ::does_ok($self, 'Test::Bar');
+        };
+    }, undef, "can create tests with methods");
+
+    ::test_out("        ok 1 - The object does Test::Bar");
+    ::test_out("        1..1");
+    ::test_out("    ok 1 - foobar");
+    ::test_out("    1..1");
+    ::test_out("ok 1 - tests work");
+    run_me('tests work');
+    ::test_test();
+}
+
 done_testing;

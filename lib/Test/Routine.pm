@@ -222,12 +222,13 @@ sub test {
   @origin{qw(file line nth)} = ((caller(0))[1,2], $i++);
 
   my $method;
-  if (blessed($body)) {
+  if (blessed($body) && $body->isa('Class::MOP::Method')) {
     my $method_metaclass = Moose::Util::with_traits(
       blessed($body), 'Test::Routine::Test::Role'
     );
     $method = $method_metaclass->meta->rebless_instance(
       $body,
+      %$arg,
       name         => $name,
       package_name => $caller,
       _origin      => \%origin,
