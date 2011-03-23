@@ -87,7 +87,7 @@ sub run {
 
   my $thing = $self->test_instance;
 
-  my @tests = grep { $_->isa('Test::Routine::Test') }
+  my @tests = grep { Moose::Util::does_role($_, 'Test::Routine::Test::Role') }
               $thing->meta->get_all_methods;
 
   # As a side note, I wonder whether there is any way to format the code below
