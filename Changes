@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.010     2011-04-07 23:06:32 America/New_York
+
+          interoperate with MooseX::Method::Signatures (thanks, Jesse Luehrs)
+
 0.009     2011-02-06 21:24:22 America/New_York
 
           eliminate the 5.12-only ... operator
