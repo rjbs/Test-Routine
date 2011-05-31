@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+          install tests with package separators in their name under munged
+          names (bug reported by Piers Cawley)
+
 0.010     2011-04-07 23:06:32 America/New_York
 
           interoperate with MooseX::Method::Signatures (thanks, Jesse Luehrs)
