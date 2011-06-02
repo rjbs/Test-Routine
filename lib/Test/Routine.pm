@@ -250,6 +250,9 @@ sub test {
   Carp::croak "can't have two tests with the same name ($name)"
     if $class->get_method($name);
 
+  Carp::croak "can't name a test after a Moose::Object method ($name)"
+    if Moose::Object->can($name);
+
   $class->add_method($name => $method);
 }
 
