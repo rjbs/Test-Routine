@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+          MooseX::Method::Signatures is not a prereq, it's optionally used in
+          some tests; the dist prereqs have been corrected to reflect this
+
 0.012     2011-06-01 22:09:50 America/New_York
 
           reject test names that conflict with Moose::Object methods
