@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.014     2011-09-11 08:47:21 America/New_York
           fix a nit in the SYNOPSIS: the runner is run_me not test_me (thanks,
           Alex White!)
 
