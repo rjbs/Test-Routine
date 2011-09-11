@@ -40,7 +40,7 @@ B<The interface of Test::Routine is still open to some changes.>
     is( $self->fixture->things_done, 1, "we have done one thing already");
   };
 
-  test_me;
+  run_me;
   done_testing;
 
 =head1 DESCRIPTION
