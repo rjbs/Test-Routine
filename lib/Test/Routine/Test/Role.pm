@@ -1,4 +1,5 @@
 package Test::Routine::Test::Role;
+# ABSTRACT: role providing test attributes
 use Moose::Role;
 
 has description => (
