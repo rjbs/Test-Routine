@@ -47,7 +47,7 @@ sub run_me {
   my ($class, $desc, $arg) = @_;
 
   if (@_ == 2 and (reftype $desc || '') eq 'HASH') {
-    ($desc, $arg) = (undef, $arg);
+    ($desc, $arg) = (undef, $desc);
   }
 
   my $caller = caller($UPLEVEL);
