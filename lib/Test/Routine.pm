@@ -5,8 +5,6 @@ package Test::Routine;
 
 =head1 SYNOPSIS
 
-B<The interface of Test::Routine is still open to some changes.>
-
   # mytest.t
   use Test::More;
   use Test::Routine;
