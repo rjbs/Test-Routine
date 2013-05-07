@@ -13,9 +13,10 @@ interface breakage.
 
 =cut
 
-use Carp qw(confess);
+use Carp qw(confess croak);
 use Scalar::Util qw(reftype);
 use Test::More ();
+use Try::Tiny;
 
 use Moose::Util::TypeConstraints;
 
@@ -89,6 +90,13 @@ sub run {
 
   my @tests = grep { Moose::Util::does_role($_, 'Test::Routine::Test::Role') }
               $thing->meta->get_all_methods;
+
+  if (length(my $re = $ENV{TEST_METHOD})) {
+    my $filter = try { qr/$re/ } # compile the the regex separately ...
+        catch { croak("TEST_METHOD ($re) is not a valid regular expression: $_") };
+    $filter = qr/\A$filter\z/;  # ... so it can't mess with the anchoring
+    @tests = grep { $_->description =~ $filter } @tests;
+  }
 
   # As a side note, I wonder whether there is any way to format the code below
   # to not look stupid. -- rjbs, 2010-09-28
