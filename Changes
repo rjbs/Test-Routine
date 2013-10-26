@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.016     2013-10-25 22:33:15 America/New_York
           update mxms.t to handle Test::Builder 0.99
 
           replace use of Class::MOP::load_class with Class::Load
