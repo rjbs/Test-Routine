@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!perl
 use strict;
 use warnings;
 use Test::More;
@@ -23,6 +23,10 @@ BEGIN {
         };
     }, undef, "can create tests with methods");
 
+    if (eval { Test::Builder->VERSION(0.9805) }) {
+      ::test_out("    # Subtest: tests work");
+      ::test_out("        # Subtest: foo bar");
+    }
     ::test_out("        ok 1 - The object does Test::Foo");
     ::test_out("        1..1");
     ::test_out("    ok 1 - foo bar");
@@ -44,6 +48,10 @@ BEGIN {
         };
     }, undef, "can create tests with methods");
 
+    if (eval { Test::Builder->VERSION(0.9805) }) {
+      ::test_out("    # Subtest: tests work");
+      ::test_out("        # Subtest: foobar");
+    }
     ::test_out("        ok 1 - The object does Test::Bar");
     ::test_out("        1..1");
     ::test_out("    ok 1 - foobar");
