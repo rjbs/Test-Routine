@@ -4,7 +4,7 @@ package Test::Routine::Compositor;
 # ABSTRACT: the tool for turning test routines into runnable classes
 
 use Carp qw(confess);
-use Class::MOP;
+use Class::Load;
 use Moose::Meta::Class;
 use Params::Util qw(_CLASS);
 use Scalar::Util qw(blessed);
@@ -36,7 +36,7 @@ sub _class_for {
   my @roles;
 
   for my $item (@$inv) {
-    Class::MOP::load_class($item);
+    Class::Load::load_class($item);
     my $target = $item->meta->isa('Moose::Meta::Class') ? \@bases
                : $item->meta->isa('Moose::Meta::Role')  ? \@roles
                : confess "can't run tests for this weird thing: $item";
