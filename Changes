@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.017     2013-12-03 21:38:07 America/New_York
+        - add TEST_METHOD env var to limit tests run (thanks,
+          Dagfinn Ilmari Mannsåker!)
+
 0.016     2013-10-25 22:33:15 America/New_York
           update mxms.t to handle Test::Builder 0.99
 
