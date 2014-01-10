@@ -91,7 +91,8 @@ sub run {
   my @tests = grep { Moose::Util::does_role($_, 'Test::Routine::Test::Role') }
               $thing->meta->get_all_methods;
 
-  if (length(my $re = $ENV{TEST_METHOD})) {
+  my $re = $ENV{TEST_METHOD};
+  if (defined $re and length $re) {
     my $filter = try { qr/$re/ } # compile the the regex separately ...
         catch { croak("TEST_METHOD ($re) is not a valid regular expression: $_") };
     $filter = qr/\A$filter\z/;  # ... so it can't mess with the anchoring

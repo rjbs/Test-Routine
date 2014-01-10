@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - avoid an uninitialized warning on 5.8 from new TEST_METHOD code
 
 0.017     2013-12-03 21:38:07 America/New_York
         - add TEST_METHOD env var to limit tests run (thanks,
