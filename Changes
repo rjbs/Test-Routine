@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.018     2014-01-11 14:13:19-05:00 America/New_York
         - avoid an uninitialized warning on 5.8 from new TEST_METHOD code
 
 0.017     2013-12-03 21:38:07 America/New_York
