@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - cope with alternate indenting of subtest leader
 
 0.018     2014-01-11 14:13:19-05:00 America/New_York
         - avoid an uninitialized warning on 5.8 from new TEST_METHOD code

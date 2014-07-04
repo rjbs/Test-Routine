@@ -11,6 +11,8 @@ BEGIN {
         || plan skip_all => "This test requires MooseX::Method::Signatures";
 }
 
+my $TBV = Test::Builder->VERSION;
+
 {
     package Test::Foo;
     use Test::Routine;
@@ -23,9 +25,12 @@ BEGIN {
         };
     }, undef, "can create tests with methods");
 
-    if (eval { Test::Builder->VERSION(0.9805) }) {
+    if ($TBV >= 0.9805 && $TBV < 1.002) {
       ::test_out("    # Subtest: tests work");
       ::test_out("        # Subtest: foo bar");
+    } elsif ($TBV > 1.002) {
+      ::test_out("# Subtest: tests work");
+      ::test_out("    # Subtest: foo bar");
     }
     ::test_out("        ok 1 - The object does Test::Foo");
     ::test_out("        1..1");
@@ -48,9 +53,12 @@ BEGIN {
         };
     }, undef, "can create tests with methods");
 
-    if (eval { Test::Builder->VERSION(0.9805) }) {
+    if ($TBV >= 0.9805 && $TBV < 1.002) {
       ::test_out("    # Subtest: tests work");
       ::test_out("        # Subtest: foobar");
+    } elsif ($TBV > 1.002) {
+      ::test_out("# Subtest: tests work");
+      ::test_out("    # Subtest: foobar");
     }
     ::test_out("        ok 1 - The object does Test::Bar");
     ::test_out("        1..1");
