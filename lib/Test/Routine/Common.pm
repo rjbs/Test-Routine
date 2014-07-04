@@ -1,6 +1,7 @@
 package Test::Routine::Common;
-use Moose::Role;
 # ABSTRACT: a role composed by all Test::Routine roles
+
+use Moose::Role;
 
 =head1 OVERVIEW
 

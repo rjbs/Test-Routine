@@ -1,7 +1,8 @@
 package Test::Routine::Test;
+# ABSTRACT: a test method in a Test::Routine role
+
 use Moose;
 extends 'Moose::Meta::Method';
-# ABSTRACT: a test method in a Test::Routine role
 
 with 'Test::Routine::Test::Role';
 

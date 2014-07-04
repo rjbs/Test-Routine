@@ -1,6 +1,7 @@
 package Test::Routine::Runner;
-use Moose;
 # ABSTRACT: tools for running Test::Routine tests
+
+use Moose;
 
 =head1 OVERVIEW
 
