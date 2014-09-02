@@ -2,6 +2,11 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.020     2014-09-01 22:02:27-04:00 America/New_York
+        - generation of Test::Routine::Manual::Demo is fixed
+        - notice another possible case of name conflict; we may change how this
+          works in the future, but only safely
+
 0.019     2014-07-04 09:54:01-04:00 America/New_York
         - cope with alternate indenting of subtest leader
 
