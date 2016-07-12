@@ -16,7 +16,7 @@ interface breakage.
 
 use Carp qw(confess croak);
 use Scalar::Util qw(reftype);
-use Test::More ();
+use Test2::API ();
 use Try::Tiny;
 
 use Moose::Util::TypeConstraints;
@@ -107,7 +107,7 @@ sub run {
       || $a->_origin->{nth}  <=> $b->_origin->{nth}
   } @tests;
 
-  Test::More::subtest($self->description, sub {
+  Test2::API::run_subtest($self->description, sub {
     for my $test (@ordered_tests) {
       $self->test_instance->run_test( $test );
       $self->clear_test_instance if $self->fresh_instance;

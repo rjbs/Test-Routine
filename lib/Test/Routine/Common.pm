@@ -10,7 +10,7 @@ on writing tests in Test::Routine|Test::Routine/Writing Tests>.
 
 =cut
 
-use Test::More ();
+use Test2::API ();
 
 use namespace::autoclean;
 
@@ -18,7 +18,7 @@ sub run_test {
   my ($self, $test) = @_;
 
   my $name = $test->name;
-  Test::More::subtest($test->description, sub { $self->$name });
+  Test2::API::run_subtest($test->description, sub { $self->$name });
 }
 
 1;
