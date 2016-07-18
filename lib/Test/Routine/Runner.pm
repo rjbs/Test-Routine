@@ -16,7 +16,7 @@ interface breakage.
 
 use Carp qw(confess croak);
 use Scalar::Util qw(reftype);
-use Test2::API ();
+use Test2::API 1.302045 ();
 use Try::Tiny;
 
 use Moose::Util::TypeConstraints;

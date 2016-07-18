@@ -10,7 +10,7 @@ on writing tests in Test::Routine|Test::Routine/Writing Tests>.
 
 =cut
 
-use Test2::API ();
+use Test2::API 1.302045 ();
 
 use namespace::autoclean;
 
