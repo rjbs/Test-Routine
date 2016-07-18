@@ -2,6 +2,12 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.021     2016-07-18 12:45:57-04:00 America/New_York (TRIAL RELEASE)
+        - When running subtests, use Test2::API rather than Test::More.
+          This means that Test::Routine tests that never use Test::Builder for
+          their own testing won't load it at all, but it also means that you'll
+          need to be on a pretty recent Test-Simple distribution.
+
 0.020     2014-09-01 22:02:27-04:00 America/New_York
         - generation of Test::Routine::Manual::Demo is fixed
         - notice another possible case of name conflict; we may change how this
