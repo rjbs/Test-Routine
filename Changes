@@ -2,6 +2,10 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.022     2016-07-18 20:13:38-04:00 America/New_York (TRIAL RELEASE)
+        - fix the mxms.t tests for Test2 changes (really, we should update the
+          tests to use an event-intercepting hub for our tests)
+
 0.021     2016-07-18 12:45:57-04:00 America/New_York (TRIAL RELEASE)
         - When running subtests, use Test2::API rather than Test::More.
           This means that Test::Routine tests that never use Test::Builder for
