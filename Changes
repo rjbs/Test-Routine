@@ -1,6 +1,11 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - When running subtests, use Test2::API rather than Test::More.
+          This means that Test::Routine tests that never use Test::Builder for
+          their own testing won't load it at all, but it also means that you'll
+          need to be on a pretty recent Test-Simple distribution.
+        - (no code changes from 0.022, just a non-trial release)
 
 0.022     2016-07-18 20:13:38-04:00 America/New_York (TRIAL RELEASE)
         - fix the mxms.t tests for Test2 changes (really, we should update the
