@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.023     2016-11-28 17:41:32+11:00 Australia/Melbourne
         - When running subtests, use Test2::API rather than Test::More.
           This means that Test::Routine tests that never use Test::Builder for
           their own testing won't load it at all, but it also means that you'll
