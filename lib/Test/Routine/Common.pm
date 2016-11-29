@@ -17,8 +17,14 @@ use namespace::autoclean;
 sub run_test {
   my ($self, $test) = @_;
 
+  my $ctx = Test2::API::context();
+  my ($file, $line) = @{ $test->_origin }{ qw(file line) };
+  $ctx->trace->set_detail("at $file line $line");
+
   my $name = $test->name;
   Test2::API::run_subtest($test->description, sub { $self->$name });
+
+  $ctx->release;
 }
 
 1;
