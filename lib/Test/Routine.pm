@@ -261,7 +261,7 @@ sub test {
   my $class = Moose::Meta::Class->initialize($caller);
 
   my %origin;
-  @origin{qw(file line nth)} = ((caller(0))[1,2], $i++);
+  @origin{qw(file line nth)} = ((caller(1))[1,2], $i++);
 
   my $method;
   if (blessed($body) && $body->isa('Class::MOP::Method')) {
