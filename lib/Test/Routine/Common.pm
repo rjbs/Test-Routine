@@ -22,7 +22,27 @@ sub run_test {
   $ctx->trace->set_detail("at $file line $line");
 
   my $name = $test->name;
-  Test2::API::run_subtest($test->description, sub { $self->$name });
+  Test2::API::run_subtest($test->description, sub {
+    my $ctx = Test2::API::context();
+
+    my $ok = eval { $self->$name; 1 };
+
+    if (! $ok) {
+      my $error = $@;
+      if (ref $error and my $events = eval { $error->as_test_abort_events }) {
+        for (@$events) {
+          my $e = $ctx->send_event(@$_);
+          $e->set_meta(test_abort_object => $error)
+        }
+      } else {
+        die $error;
+      }
+    }
+
+    $ctx->release;
+
+    return;
+  });
 
   $ctx->release;
 }
