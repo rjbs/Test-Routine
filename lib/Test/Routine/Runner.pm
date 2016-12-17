@@ -8,7 +8,7 @@ use Moose;
 A Test::Routine::Runner takes a callback for building test instances, then uses
 it to build instances and run the tests on it.  The Test::Routine::Runner
 interface is still undergoing work, but the Test::Routine::Util exports for
-running tests, descibed in L<Test::Routine|Test::Routine/Running Tests>, are
+running tests, described in L<Test::Routine|Test::Routine/Running Tests>, are
 more stable.  Please use those instead, unless you are willing to deal with
 interface breakage.
 
