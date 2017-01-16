@@ -2,6 +2,12 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.024     2017-01-16 13:03:18-05:00 America/New_York
+        - tests are now run with Test::Abortable's subtest() instead of
+          Test2::API directly; this means they can be safely aborted with
+          exceptions that conform to the Test::Abortable rules; see its docs
+          for more information
+
 0.023     2016-11-28 17:41:32+11:00 Australia/Melbourne
         - When running subtests, use Test2::API rather than Test::More.
           This means that Test::Routine tests that never use Test::Builder for
