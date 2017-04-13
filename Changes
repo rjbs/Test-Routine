@@ -1,6 +1,12 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - remove fresh_instance; it wasn't documented, and it probably was not
+          going to work out
+        - the Runner no longer caches the test_instance, so its BUILD and
+          DEMOLISH should now be called usefully
+        - Test::Routine::Common now adds stub BUILD and DEMOLISH so you can use
+          method modifiers on them
 
 0.024     2017-01-16 13:03:18-05:00 America/New_York
         - tests are now run with Test::Abortable's subtest() instead of
