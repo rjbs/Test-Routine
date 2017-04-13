@@ -53,14 +53,6 @@ coerce 'Test::Routine::_InstanceBuilder',
   from 'Test::Routine::_Instance',
   via  { my $instance = $_; sub { $instance } };
 
-has test_instance => (
-  is   => 'ro',
-  does => 'Test::Routine::Common',
-  lazy => 1,
-  init_arg   => undef,
-  builder    => '_build_test_instance',
-);
-
 has _instance_builder => (
   is  => 'ro',
   isa => 'Test::Routine::_InstanceBuilder',
@@ -69,7 +61,7 @@ has _instance_builder => (
   init_arg => 'instance_from',
   required => 1,
   handles  => {
-    '_build_test_instance' => 'execute_method',
+    'build_test_instance' => 'execute_method',
   },
 );
 
@@ -82,10 +74,10 @@ has description => (
 sub run {
   my ($self) = @_;
 
-  my $thing = $self->test_instance;
+  my $test_instance = $self->build_test_instance;
 
   my @tests = grep { Moose::Util::does_role($_, 'Test::Routine::Test::Role') }
-              $thing->meta->get_all_methods;
+              $test_instance->meta->get_all_methods;
 
   my $re = $ENV{TEST_METHOD};
   if (defined $re and length $re) {
@@ -103,12 +95,9 @@ sub run {
   } @tests;
 
   Test2::API::run_subtest($self->description, sub {
-    my $test_instance = $self->test_instance;
-    $test_instance->test_routine_startup;
     for my $test (@ordered_tests) {
       $test_instance->run_test( $test );
     }
-    $test_instance->test_routine_shutdown;
   });
 }
 

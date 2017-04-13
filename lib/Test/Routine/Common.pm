@@ -15,8 +15,11 @@ use Test2::API 1.302045 ();
 
 use namespace::autoclean;
 
-sub test_routine_startup  {}
-sub test_routine_shutdown {}
+sub BUILD {
+}
+
+sub DEMOLISH {
+}
 
 sub run_test {
   my ($self, $test) = @_;
