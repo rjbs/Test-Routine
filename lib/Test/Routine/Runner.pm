@@ -56,8 +56,9 @@ coerce 'Test::Routine::_InstanceBuilder',
 has test_instance => (
   is   => 'ro',
   does => 'Test::Routine::Common',
+  lazy => 1,
   init_arg   => undef,
-  lazy_build => 1,
+  builder    => '_build_test_instance',
 );
 
 has _instance_builder => (
@@ -76,12 +77,6 @@ has description => (
   is  => 'ro',
   isa => 'Str',
   required => 1,
-);
-
-has fresh_instance => (
-  is  => 'ro',
-  isa => 'Bool',
-  default => 0,
 );
 
 sub run {
@@ -110,7 +105,6 @@ sub run {
   Test2::API::run_subtest($self->description, sub {
     for my $test (@ordered_tests) {
       $self->test_instance->run_test( $test );
-      $self->clear_test_instance if $self->fresh_instance;
     }
   });
 }
