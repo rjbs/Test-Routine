@@ -103,9 +103,12 @@ sub run {
   } @tests;
 
   Test2::API::run_subtest($self->description, sub {
+    my $test_instance = $self->test_instance;
+    $test_instance->test_routine_startup;
     for my $test (@ordered_tests) {
-      $self->test_instance->run_test( $test );
+      $test_instance->run_test( $test );
     }
+    $test_instance->test_routine_shutdown;
   });
 }
 
