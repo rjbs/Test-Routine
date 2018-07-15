@@ -266,8 +266,13 @@ sub test {
   my $method;
   if (blessed($body) && $body->isa('Class::MOP::Method')) {
     my $method_metaclass = Moose::Util::with_traits(
-      blessed($body), 'Test::Routine::Test::Role'
+      blessed($body),
+      'Test::Routine::Test::Role',
+      ($caller->can('test_routine_test_traits')
+        ? $caller->test_routine_test_traits
+        : ()),
     );
+
     $method = $method_metaclass->meta->rebless_instance(
       $body,
       %$arg,
@@ -275,9 +280,20 @@ sub test {
       package_name => $caller,
       _origin      => \%origin,
     );
-  }
-  else {
-    $method = Test::Routine::Test->wrap(
+  } else {
+    my $test_class = 'Test::Routine::Test';
+
+    if ($caller->can('test_routine_test_traits')) {
+      my @traits = $caller->test_routine_test_traits;
+
+      $test_class = Moose::Meta::Class->create_anon_class(
+        superclasses => [ $test_class ],
+        cache        => 1,
+        roles        => \@traits,
+      )->name;
+    }
+
+    $method = $test_class->wrap(
       %$arg,
       name => $name,
       body => $body,
