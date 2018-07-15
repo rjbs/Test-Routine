@@ -16,6 +16,8 @@ has _origin => (
   required => 1,
 );
 
+sub skip_reason { return }
+
 no Moose::Role;
 
 1;

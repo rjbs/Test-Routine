@@ -95,8 +95,15 @@ sub run {
   } @tests;
 
   Test2::API::run_subtest($self->description, sub {
-    for my $test (@ordered_tests) {
-      $test_instance->run_test( $test );
+    TEST: for my $test (@ordered_tests) {
+      my $ctx = Test2::API::context;
+      if (my $reason = $test->skip_reason($test_instance)) {
+        $ctx->skip($test->name, $reason);
+      } else {
+        $test_instance->run_test( $test );
+      }
+
+      $ctx->release;
     }
   });
 }
