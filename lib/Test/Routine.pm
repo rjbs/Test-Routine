@@ -218,7 +218,7 @@ use Test::Routine::Common;
 use Test::Routine::Test;
 
 Moose::Exporter->setup_import_methods(
-  with_caller => [ qw(test) ],
+  as_is       => [ qw(test) ],
   also        => 'Moose::Role',
 );
 
@@ -234,7 +234,7 @@ sub init_meta {
 
 my $i = 0;
 sub test {
-  my $caller = shift;
+  my $caller = caller();
   my $name   = shift;
   my ($arg, $body);
 
@@ -261,7 +261,7 @@ sub test {
   my $class = Moose::Meta::Class->initialize($caller);
 
   my %origin;
-  @origin{qw(file line nth)} = ((caller(1))[1,2], $i++);
+  @origin{qw(file line nth)} = ((caller(0))[1,2], $i++);
 
   my $method;
   if (blessed($body) && $body->isa('Class::MOP::Method')) {
