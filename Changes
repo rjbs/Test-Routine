@@ -2,10 +2,13 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.027     2018-08-26 21:40:35-04:00 America/New_York
+        - no changes since 0.026
+
 0.026     2018-07-15 12:14:57-04:00 America/Toronto (TRIAL RELEASE)
         - add test_routine_test_traits method to apply more traits to test
           objects
-        - add skip_reason to test objects to allow them to say "skip me onthis
+        - add skip_reason to test objects to allow them to say "skip me on this
           run"
         - drop use of undocumented "with_caller" feature from Moose::Exporter
 
