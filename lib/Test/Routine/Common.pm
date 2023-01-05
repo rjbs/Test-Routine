@@ -1,3 +1,4 @@
+use v5.12.0;
 package Test::Routine::Common;
 # ABSTRACT: a role composed by all Test::Routine roles
 

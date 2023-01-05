@@ -1,4 +1,4 @@
-use strict;
+use v5.12.0;
 use warnings;
 package Test::Routine;
 # ABSTRACT: composable units of assertion
@@ -255,7 +255,7 @@ sub test {
     $arg->{description} = delete $arg->{desc};
   }
 
-  $arg->{description} = $name unless defined $arg->{description};
+  $arg->{description} //= $name;
   $name =~ s/(?:::|')/_/g;
 
   my $class = Moose::Meta::Class->initialize($caller);

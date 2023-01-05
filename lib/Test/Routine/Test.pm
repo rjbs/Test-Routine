@@ -1,3 +1,4 @@
+use v5.12.0;
 package Test::Routine::Test;
 # ABSTRACT: a test method in a Test::Routine role
 

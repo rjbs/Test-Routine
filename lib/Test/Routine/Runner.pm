@@ -1,3 +1,4 @@
+use v5.12.0;
 package Test::Routine::Runner;
 # ABSTRACT: tools for running Test::Routine tests
 
@@ -80,7 +81,7 @@ sub run {
               $test_instance->meta->get_all_methods;
 
   my $re = $ENV{TEST_METHOD};
-  if (defined $re and length $re) {
+  if (length $re) {
     my $filter = try { qr/$re/ } # compile the the regex separately ...
         catch { croak("TEST_METHOD ($re) is not a valid regular expression: $_") };
     $filter = qr/\A$filter\z/;  # ... so it can't mess with the anchoring

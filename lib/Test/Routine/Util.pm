@@ -46,7 +46,7 @@ sub _curry_tester {
 sub run_me {
   my ($class, $desc, $arg) = @_;
 
-  if (@_ == 2 and (reftype $desc || '') eq 'HASH') {
+  if (@_ == 2 and (reftype $desc // '') eq 'HASH') {
     ($desc, $arg) = (undef, $desc);
   }
 
@@ -64,9 +64,8 @@ sub run_tests {
 
   my @caller = caller($UPLEVEL);
 
-  $desc = defined($desc)
-        ? $desc
-        : sprintf 'tests from %s, line %s', $caller[1], $caller[2];
+  $desc = $desc
+       // sprintf 'tests from %s, line %s', $caller[1], $caller[2];
 
   my $builder = $class->_compositor_class->instance_builder($inv, $arg);
 

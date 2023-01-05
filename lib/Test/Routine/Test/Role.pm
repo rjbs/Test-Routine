@@ -1,3 +1,4 @@
+use v5.12.0;
 package Test::Routine::Test::Role;
 # ABSTRACT: role providing test attributes
 
