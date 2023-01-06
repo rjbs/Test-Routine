@@ -24,27 +24,6 @@ use Moose::Util::TypeConstraints;
 
 use namespace::clean;
 
-# XXX: THIS CODE BELOW WILL BE REMOVED VERY SOON -- rjbs, 2010-10-18
-use Sub::Exporter -setup => {
-  exports => [
-    run_tests => \'_curry_tester',
-    run_me    => \'_curry_tester',
-  ],
-  groups  => [ default   => [ qw(run_me run_tests) ] ],
-};
-
-sub _curry_tester {
-  my ($class, $name) = @_;
-  use Test::Routine::Util;
-  my $sub = Test::Routine::Util->_curry_tester($name);
-
-  return sub {
-    warn "you got $name from Test::Routine::Runner; use Test::Routine::Util instead; Test::Routine::Runner's exports will be removed soon\n";
-    goto &$sub;
-  }
-}
-# XXX: THIS CODE ABOVE WILL BE REMOVED VERY SOON -- rjbs, 2010-10-18
-
 subtype 'Test::Routine::_InstanceBuilder', as 'CodeRef';
 subtype 'Test::Routine::_Instance',
   as 'Object',
