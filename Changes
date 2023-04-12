@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.031     2023-04-11 21:37:45-04:00 America/New_York
         - The run_test method now returns the pass/fail of the subtest
           represented by a test method.  Since run_test is often around-ed, you
           may need to adjust how you modify its return!
