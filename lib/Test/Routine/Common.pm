@@ -30,9 +30,13 @@ sub run_test {
   $ctx->trace->set_detail("at $file line $line");
 
   my $name = $test->name;
-  Test::Abortable::subtest($test->description, sub { $self->$name });
+
+  # Capture and return whether the test as a whole succeeded or not
+  my $rc = Test::Abortable::subtest($test->description, sub { $self->$name });
 
   $ctx->release;
+
+  return $rc;
 }
 
 1;
