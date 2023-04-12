@@ -29,11 +29,11 @@ jobs:
         # installing via cpanm that could, instead, be installed from apt.  I
         # may do that later, but for now, it's fine! -- rjbs, 2023-01-07
         run: |
-          dzil authordeps --missing | /tmp/cpanm --notest -S
-          dzil listdeps --author --missing | /tmp/cpanm --notest -S
+          dzil -I . authordeps --missing | /tmp/cpanm --notest -S
+          dzil -I . listdeps --author --missing | /tmp/cpanm --notest -S
       - name: Build tarball
         run: |
-          dzil build --in Dist-To-Test
+          dzil -I . build --in Dist-To-Test
           tar zcvf Dist-To-Test.tar.gz Dist-To-Test
       - name: Upload tarball
         uses: actions/upload-artifact@v3
