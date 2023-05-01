@@ -59,6 +59,19 @@ sub run {
   my @tests = grep { Moose::Util::does_role($_, 'Test::Routine::Test::Role') }
               $test_instance->meta->get_all_methods;
 
+  if ($ENV{TR_LIST_TEST_METHODS}) {
+    my $sq = eval {
+      require String::ShellQuote;
+      \&String::ShellQuote::shell_quote;
+    } || sub { $_[0] };
+
+    print "Tests:\n";
+
+    print "\t" . $sq->($_->name) . "\n" for @tests;
+
+    exit;
+  }
+
   my $re = $ENV{TEST_METHOD};
   if (length $re) {
     my $filter = try { qr/$re/ } # compile the the regex separately ...
