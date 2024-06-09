@@ -1,3 +1,7 @@
+# do-not-regen
+#
+# This has a custom setting: "install-dzil-from-cpan: true", because the
+# version of Dist::Zilla in apt will not properly work with "inc" plugins.
 name: "dzil matrix"
 on:
   workflow_dispatch: ~
