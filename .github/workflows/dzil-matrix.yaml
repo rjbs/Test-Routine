@@ -10,3 +10,5 @@ jobs:
   build-and-test:
     name: dzil-matrix
     uses: rjbs/dzil-actions/.github/workflows/dzil-matrix.yaml@v0
+    with:
+      install-dzil-from-cpan: true
