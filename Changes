@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.032     2026-03-11 22:13:59-04:00 America/New_York
         - add Test::Routine::Runner::NoSubtest, to run all the tests on an
           instance without putting them into a subtest
 
